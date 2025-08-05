@@ -1,0 +1,136 @@
+/* Import Design System */
+@import './styles/variables.css';
+@import './styles/base.css';
+@import './styles/components.css';
+
+/* App Layout */
+#root {
+  min-height: 100vh;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TARGETED WIDTH FIX - Only apply to main page containers */
+html body #root .App > * > .page-container,
+html body #root .App .persons-list > .page-container,
+html body #root .App .reports-list > .page-container,
+html body #root .App .dashboard > .page-container,
+html body #root .App .report-form-container > .page-container,
+html body #root .App .person-form-container > .page-container,
+html body #root .App .report-detail > .page-container,
+html body #root .App .person-detail > .page-container {
+  max-width: none !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  padding-left: 5% !important;
+  padding-right: 5% !important;
+  box-sizing: border-box !important;
+}
+
+/* More specific targeting for page containers */
+.page-container {
+  max-width: none !important;
+  width: 90% !important;
+  margin: 0 auto !important;
+  padding-left: 5% !important;
+  padding-right: 5% !important;
+  box-sizing: border-box !important;
+}
+
+/* Force login to be wider with maximum specificity */
+html body #root .App .login-container {
+  padding: 2rem 5% !important;
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+html body #root .App .login-container .login-card {
+  max-width: 80% !important;
+  width: 80% !important;
+  margin: 0 auto !important;
+}
+
+/* Force main content area to use full width */
+.main-content {
+  padding: 2rem 0 !important;
+}
+
+/* Remove any max-width restrictions on grid containers */
+.persons-grid,
+.reports-grid,
+.dashboard-stats {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Prevent horizontal scroll and ensure proper centering */
+html, body {
+  width: 100% !important;
+  max-width: none !important;
+  overflow-x: hidden !important;
+}
+
+#root {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.App {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Force all layout components to use full width */
+.layout {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Ensure header uses full width */
+.header-content {
+  max-width: none !important;
+  width: 95% !important;
+  margin: 0 auto !important;
+  padding-left: 2.5% !important;
+  padding-right: 2.5% !important;
+}
+
+/* Only target specific main containers, not all elements */
+.main-content,
+.layout {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* TARGETED PROTECTION - Only override width/padding that conflicts with our main containers */
+.btn, .button,
+.report-actions .btn,
+.page-actions .btn,
+.report-actions button,
+.page-actions button {
+  width: auto !important;
+  padding-left: var(--spacing-4) !important;
+  padding-right: var(--spacing-4) !important;
+}
+
+/* Ensure grid layouts work properly */
+.reports-grid,
+.persons-grid,
+.dashboard-stats {
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Keep cards at their natural width within the page container */
+.report-card,
+.person-card,
+.dashboard-card {
+  width: auto !important;
+  max-width: none !important;
+}

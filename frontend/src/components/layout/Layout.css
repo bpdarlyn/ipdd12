@@ -1,0 +1,11 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  background-color: var(--color-bg-secondary);
+  padding: var(--spacing-8) 0;
+}

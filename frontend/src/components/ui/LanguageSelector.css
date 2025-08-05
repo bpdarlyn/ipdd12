@@ -1,0 +1,36 @@
+.language-selector {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.lang-btn {
+  background: transparent;
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-secondary);
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 36px;
+  text-align: center;
+}
+
+.lang-btn:hover {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border-medium);
+  color: var(--color-text-primary);
+}
+
+.lang-btn.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.lang-btn.active:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}

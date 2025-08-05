@@ -1,0 +1,131 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  padding: 1rem 5% !important;
+  width: 100% !important;
+  max-width: none !important;
+  position: relative;
+}
+
+.language-selector-container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  z-index: 10;
+}
+
+.login-card {
+  background-color: #ffffff;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e9ecef;
+  width: 100% !important;
+  max-width: 900px !important;
+}
+
+/* Aggressive width fix for Mac M1 Chrome */
+@media (min-width: 1200px) {
+  .login-container {
+    padding: 2rem 5% !important;
+  }
+  
+  .login-card {
+    max-width: 1000px !important;
+    padding: 4rem !important;
+  }
+}
+
+@media (min-width: 1400px) {
+  .login-card {
+    max-width: 1200px !important;
+    padding: 5rem !important;
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h1 {
+  color: #212529;
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.login-header p {
+  color: #6c757d;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #212529;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.form-group input:disabled {
+  background-color: #f1f3f4;
+  cursor: not-allowed;
+}
+
+.login-btn {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+}
+
+.login-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.login-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}

@@ -1,0 +1,154 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'IEM IPDD 12 Backend - SAM Template'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+    Description: Environment name
+  
+  DataPersistenceStackName:
+    Type: String
+    Description: Name of the data persistence stack
+    Default: ipdd12-data-persistence
+
+Globals:
+  Function:
+    Runtime: python3.9
+    Timeout: 30
+    Environment:
+      Variables:
+        ENVIRONMENT: !Ref Environment
+
+Resources:
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'ipdd12-lambda-execution-role-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+      Policies:
+        - PolicyName: LambdaS3Policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource: 
+                  - !Sub 
+                    - '${BucketArn}/*'
+                    - BucketArn: 
+                        Fn::Sub:
+                          - 'arn:aws:s3:::${BucketName}'
+                          - BucketName:
+                              Fn::ImportValue: !Sub '${DataPersistenceStackName}-AttachmentsBucket'
+        - PolicyName: LambdaCognitoPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cognito-idp:AdminInitiateAuth
+                  - cognito-idp:AdminGetUser
+                  - cognito-idp:GetUser
+                Resource:
+                  - !Sub 
+                    - 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${UserPoolId}'
+                    - UserPoolId:
+                        Fn::ImportValue: !Sub '${DataPersistenceStackName}-UserPoolId'
+
+  # Main Lambda Function
+  ApiLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub 'ipdd12-api-${Environment}'
+      CodeUri: src/
+      Handler: main.handler
+      Runtime: python3.9
+      MemorySize: 512
+      Timeout: 30
+      Role: !GetAtt LambdaExecutionRole.Arn
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue: !Sub '${DataPersistenceStackName}-LambdaSecurityGroupId'
+        SubnetIds: !Split
+          - ','
+          - Fn::ImportValue: !Sub '${DataPersistenceStackName}-PrivateSubnetIds'
+      Environment:
+        Variables:
+          DATABASE_URL:
+            Fn::ImportValue: !Sub '${DataPersistenceStackName}-DatabaseURL'
+          S3_BUCKET:
+            Fn::ImportValue: !Sub '${DataPersistenceStackName}-AttachmentsBucket'
+          COGNITO_USER_POOL_ID:
+            Fn::ImportValue: !Sub '${DataPersistenceStackName}-UserPoolId'
+          COGNITO_CLIENT_ID:
+            Fn::ImportValue: !Sub '${DataPersistenceStackName}-UserPoolClientId'
+          COGNITO_REGION: !Ref AWS::Region
+          JWT_SECRET_KEY: !Sub 'ipdd12-secret-${Environment}'
+      Events:
+        ApiGatewayEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /{proxy+}
+            Method: ANY
+
+  # API Gateway
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub 'ipdd12-api-gateway-${Environment}'
+      StageName: !Ref Environment
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      Auth:
+        DefaultAuthorizer: NONE
+      GatewayResponses:
+        DEFAULT_4XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+              Access-Control-Allow-Methods: "'*'"
+        DEFAULT_5XX:
+          ResponseParameters:
+            Headers:
+              Access-Control-Allow-Origin: "'*'"
+              Access-Control-Allow-Headers: "'*'"
+              Access-Control-Allow-Methods: "'*'"
+
+  # CloudWatch Log Group
+  ApiLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/ipdd12-api-${Environment}'
+      RetentionInDays: 14
+
+Outputs:
+  ApiGatewayUrl:
+    Description: API Gateway URL
+    Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${Environment}'
+    Export:
+      Name: !Sub '${AWS::StackName}-ApiGatewayUrl'
+
+  LambdaFunctionArn:
+    Description: Lambda Function ARN
+    Value: !GetAtt ApiLambdaFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-LambdaFunctionArn'

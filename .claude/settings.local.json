@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openssl genrsa:*)",
+      "Bash(openssl req:*)",
+      "Bash(openssl x509:*)",
+      "Bash(AWS_PROFILE=nylrad aws acm import-certificate --certificate fileb://server.crt --private-key fileb://server.key --certificate-chain fileb://ca.crt --region us-east-1)",
+      "Bash(AWS_PROFILE=nylrad aws acm import-certificate --certificate fileb://ca.crt --private-key fileb://ca.key --region us-east-1)",
+      "Bash(AWS_PROFILE=nylrad aws ec2 create-client-vpn-endpoint )",
+      "Bash(--client-cidr-block 10.10.0.0/16 )",
+      "Bash(--server-certificate-arn arn:aws:acm:us-east-1:262589983139:certificate/da08307b-7c63-4385-9775-7105803809df )",
+      "Bash(--authentication-options Type=certificate-authentication,MutualAuthentication='{ClientRootCertificateChainArn=arn:aws:acm:us-east-1:262589983139:certificate/13172340-7ff9-4ea1-9d25-976cdeeb9c12}' )",
+      "Bash(--connection-log-options Enabled=false )",
+      "Bash(--description \"IPDD12 Client VPN\" )",
+      "Bash(--region us-east-1)",
+      "Bash(AWS_PROFILE=nylrad aws cloudformation describe-stacks --stack-name ipdd12-data-persistence-prod --region us-east-1 --query 'Stacks[0].Outputs[?OutputKey==`PrivateSubnetIds`].OutputValue' --output text)",
+      "Bash(AWS_PROFILE=nylrad aws ec2 associate-client-vpn-target-network )",
+      "Bash(--client-vpn-endpoint-id cvpn-endpoint-0f8cad0c89072c4df )",
+      "Bash(--subnet-id subnet-0a0e433f1d245d5df )",
+      "Bash(AWS_PROFILE=nylrad aws ec2 associate-client-vpn-target-network )",
+      "Bash(--client-vpn-endpoint-id cvpn-endpoint-0f8cad0c89072c4df )",
+      "Bash(--subnet-id subnet-0ff124051435828ac )",
+      "Bash(AWS_PROFILE=nylrad aws ec2 authorize-client-vpn-ingress )",
+      "Bash(--client-vpn-endpoint-id cvpn-endpoint-0f8cad0c89072c4df )",
+      "Bash(--target-network-cidr 10.0.0.0/16 )",
+      "Bash(--authorize-all-groups )",
+      "Bash(--description \"Allow access to VPC\" )",
+      "Bash(AWS_PROFILE=nylrad aws ec2 authorize-client-vpn-ingress )",
+      "Bash(--client-vpn-endpoint-id cvpn-endpoint-0f8cad0c89072c4df )",
+      "Bash(--target-network-cidr 0.0.0.0/0 )",
+      "Bash(--authorize-all-groups )",
+      "Bash(--description \"Allow internet access\" )",
+      "Bash(mv:*)",
+      "Bash(grep:*)"
+    ],
+    "deny": []
+  }
+}
