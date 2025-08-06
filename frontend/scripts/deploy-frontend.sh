@@ -34,14 +34,14 @@ STACK_NAME="ipdd12-frontend-hosting-${ENVIRONMENT}"
 echo -e "${YELLOW}📋 Step 1: Deploying CloudFormation stack...${NC}"
 
 # Prepare parameters
-PARAMETERS="ParameterKey=Environment,ParameterValue=${ENVIRONMENT}"
+PARAMETERS="Environment=${ENVIRONMENT}"
 
 if [[ -n "$DOMAIN_NAME" ]]; then
-    PARAMETERS="${PARAMETERS} ParameterKey=DomainName,ParameterValue=${DOMAIN_NAME}"
+    PARAMETERS="${PARAMETERS} DomainName=${DOMAIN_NAME}"
 fi
 
 if [[ -n "$CERTIFICATE_ARN" ]]; then
-    PARAMETERS="${PARAMETERS} ParameterKey=CertificateArn,ParameterValue=${CERTIFICATE_ARN}"
+    PARAMETERS="${PARAMETERS} CertificateArn=${CERTIFICATE_ARN}"
 fi
 
 # Deploy CloudFormation stack
@@ -103,7 +103,7 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}📋 Step 3: Building frontend...${NC}"
     
-    cd frontend
+    cd ..
     
     # Install dependencies if needed
     if [[ ! -d "node_modules" ]]; then
@@ -111,9 +111,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         npm install
     fi
     
-    # Build for production
-    echo -e "${YELLOW}🔨 Building for production...${NC}"
-    npm run build
+    # Build for specific environment
+    echo -e "${YELLOW}🔨 Building for ${ENVIRONMENT}...${NC}"
+    NODE_ENV=production npm run build -- --mode ${ENVIRONMENT}
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ Build completed successfully${NC}"

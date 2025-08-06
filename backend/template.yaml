@@ -3,6 +3,16 @@ Transform: AWS::Serverless-2016-10-31
 Description: 'IEM IPDD 12 Backend - SAM Template'
 
 Parameters:
+  HostedZoneName:
+    Type: String
+    Description: Hosted Zone (Domain Name)
+    Default: 'xxxx.ipdd12.com.'
+  ApiSubdomainCertificateARN:
+    Type: String
+    Description: The arn certificate
+  ApiSubdomain:
+    Type: String
+    Description: The subdomain where this API will be served
   Environment:
     Type: String
     Default: dev
@@ -113,6 +123,12 @@ Resources:
     Properties:
       Name: !Sub 'ipdd12-api-gateway-${Environment}'
       StageName: !Ref Environment
+      Domain:
+        DomainName: !Ref ApiSubdomain
+        CertificateArn: !Ref ApiSubdomainCertificateARN
+        Route53:
+          HostedZoneName: !Ref HostedZoneName
+        SecurityPolicy: TLS_1_2
       Cors:
         AllowMethods: "'*'"
         AllowHeaders: "'*'"

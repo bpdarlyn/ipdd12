@@ -19,6 +19,10 @@ Parameters:
     Description: Database admin password
     MinLength: 8
 
+  MainDBName:
+    Type: String
+    Description: Database Name
+
 Resources:
   # S3 Bucket for file attachments
   AttachmentsBucket:
@@ -222,6 +226,7 @@ Resources:
   MySQLInstance:
     Type: AWS::RDS::DBInstance
     Properties:
+#      DBName: !Ref MainDBName
       DBInstanceIdentifier: !Sub 'ipdd12-mysql-${Environment}'
       DBInstanceClass: db.t3.small
       Engine: mysql
@@ -285,7 +290,7 @@ Outputs:
 
   DatabaseURL:
     Description: RDS MySQL connection URL
-    Value: !Sub 'mysql+pymysql://${DBUsername}:${DBPassword}@${MySQLInstance.Endpoint.Address}:${MySQLInstance.Endpoint.Port}/mysql'
+    Value: !Sub 'mysql+pymysql://${DBUsername}:${DBPassword}@${MySQLInstance.Endpoint.Address}:${MySQLInstance.Endpoint.Port}/${MainDBName}'
     Export:
       Name: !Sub '${AWS::StackName}-DatabaseURL'
 

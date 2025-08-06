@@ -119,7 +119,7 @@ Resources:
             Principal:
               Service: cloudfront.amazonaws.com
             Action: s3:GetObject
-            Resource: !Sub '${FrontendBucket}/*'
+            Resource: !Sub '${FrontendBucket.Arn}/*'
             Condition:
               StringEquals:
                 'AWS:SourceArn': !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}'
@@ -145,7 +145,7 @@ Resources:
                   - s3:PutObject
                   - s3:DeleteObject
                   - s3:PutObjectAcl
-                Resource: !Sub '${FrontendBucket}/*'
+                Resource: !Sub '${FrontendBucket.Arn}/*'
               - Effect: Allow
                 Action:
                   - cloudfront:CreateInvalidation
