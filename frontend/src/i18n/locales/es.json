@@ -13,12 +13,15 @@
     "yes": "Sí",
     "no": "No",
     "confirm": "Confirmar",
-    "search": "Buscar"
+    "search": "Buscar",
+    "locale": "es",
+    "created": "Creado"
   },
   "nav": {
     "dashboard": "Dashboard",
     "reports": "Reportes",
     "persons": "Personas",
+    "recurringMeetings": "Reuniones Recurrentes",
     "logout": "Cerrar Sesión"
   },
   "auth": {
@@ -53,7 +56,6 @@
     "edit": "Editar Reporte",
     "noReports": "No se encontraron reportes.",
     "createFirst": "Crear el primer reporte",
-    "reportType": "Tipo de Reporte",
     "meetingDate": "Fecha de Reunión",
     "location": "Ubicación",
     "attendees": "Asistentes",
@@ -99,7 +101,9 @@
     "systemInfo": "Información del Sistema",
     "address": "Dirección",
     "amountCollected": "Monto Colectado",
-    "reportNotFound": "Reporte no encontrado"
+    "reportNotFound": "Reporte no encontrado",
+    "recurringMeeting": "Reunión Recurrente",
+    "selectRecurringMeeting": "Selecciona una reunión recurrente"
   },
   "persons": {
     "title": "Personas",
@@ -128,6 +132,47 @@
     "enterFullAddress": "Ingresa la dirección completa de casa",
     "createPerson": "Crear Persona",
     "updatePerson": "Actualizar Persona"
+  },
+  "recurringMeetings": {
+    "title": "Reuniones Recurrentes",
+    "createNew": "Crear Nueva Reunión Recurrente",
+    "edit": "Editar Reunión Recurrente",
+    "noMeetings": "No se encontraron reuniones recurrentes.",
+    "createFirst": "Crear la primera reunión recurrente",
+    "meetingDateTime": "Fecha y Hora de Reunión",
+    "leader": "Líder",
+    "reportType": "Tipo de Reporte",
+    "location": "Ubicación",
+    "periodicity": "Periodicidad",
+    "googleMapsLink": "Enlace de Google Maps",
+    "viewOnMaps": "Ver en Google Maps",
+    "meetingInfo": "Información de Reunión",
+    "leaderInfo": "Información del Líder",
+    "locationInfo": "Información de Ubicación",
+    "systemInfo": "Información del Sistema",
+    "created": "Creado",
+    "lastUpdated": "Última Actualización",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta reunión recurrente? Esto también puede afectar los reportes asociados.",
+    "deleteSuccess": "Reunión recurrente eliminada exitosamente",
+    "deleteError": "Error al eliminar la reunión recurrente",
+    "loadError": "Error al cargar la reunión recurrente",
+    "backToMeetings": "Volver a Reuniones Recurrentes",
+    "selectLeader": "Selecciona un líder",
+    "selectReportType": "Selecciona un tipo de reporte",
+    "selectPeriodicity": "Selecciona la periodicidad",
+    "meetingLocationAddress": "Dirección del lugar de reunión",
+    "createMeeting": "Crear Reunión Recurrente",
+    "updateMeeting": "Actualizar Reunión Recurrente",
+    "meetingNotFound": "Reunión recurrente no encontrada",
+    "celula": "Célula",
+    "culto": "Culto",
+    "weekly": "Semanal",
+    "monthly": "Mensual",
+    "daily": "Diario",
+    "reportsCount": "Reportes Asociados",
+    "viewReports": "Ver Reportes",
+    "description": "Descripción",
+    "viewReportsMessage": "Haz clic en 'Ver Reportes' para ver todos los reportes asociados a esta reunión recurrente."
   },
   "forms": {
     "required": "Este campo es requerido",

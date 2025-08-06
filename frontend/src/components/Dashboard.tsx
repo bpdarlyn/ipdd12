@@ -127,7 +127,7 @@ const Dashboard: React.FC = () => {
                 <ErrorBoundary key={report.id}>
                   <div className="report-item">
                     <div className="report-info">
-                      <h3>{report.report_type.toUpperCase()}</h3>
+                      <h3>{report.recurring_meeting?.report_type?.toUpperCase() || 'UNKNOWN'}</h3>
                       <p>{t('dashboard.meeting')}: {new Date(report.meeting_datetime).toLocaleDateString()}</p>
                       <p>{t('dashboard.attendance')}: {report.attendees_count}</p>
                       <p>{t('dashboard.location')}: {report.location}</p>

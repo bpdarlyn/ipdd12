@@ -13,4 +13,5 @@ class Person(BaseModel):
     google_maps_link = Column(String(1000), nullable=True)
 
     # Relationships
-    led_reports = relationship("Report", back_populates="leader")
+    led_reports = relationship("Report", back_populates="leader", cascade="all, delete-orphan")
+    recurring_meetings = relationship("RecurringMeeting", back_populates="leader", cascade="all, delete-orphan")

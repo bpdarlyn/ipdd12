@@ -13,12 +13,15 @@
     "yes": "Yes",
     "no": "No",
     "confirm": "Confirm",
-    "search": "Search"
+    "search": "Search",
+    "locale": "en",
+    "created": "Created"
   },
   "nav": {
     "dashboard": "Dashboard",
     "reports": "Reports",
     "persons": "Persons",
+    "recurringMeetings": "Recurring Meetings",
     "logout": "Logout"
   },
   "auth": {
@@ -53,7 +56,6 @@
     "edit": "Edit Report",
     "noReports": "No reports found.",
     "createFirst": "Create the first report",
-    "reportType": "Report Type",
     "meetingDate": "Meeting Date",
     "location": "Location",
     "attendees": "Attendees",
@@ -99,7 +101,9 @@
     "systemInfo": "System Information",
     "address": "Address",
     "amountCollected": "Amount Collected",
-    "reportNotFound": "Report not found"
+    "reportNotFound": "Report not found",
+    "recurringMeeting": "Recurring Meeting",
+    "selectRecurringMeeting": "Select a recurring meeting"
   },
   "persons": {
     "title": "Persons",
@@ -128,6 +132,46 @@
     "enterFullAddress": "Enter full home address",
     "createPerson": "Create Person",
     "updatePerson": "Update Person"
+  },
+  "recurringMeetings": {
+    "title": "Recurring Meetings",
+    "createNew": "Create New Recurring Meeting",
+    "edit": "Edit Recurring Meeting",
+    "noMeetings": "No recurring meetings found.",
+    "createFirst": "Create the first recurring meeting",
+    "meetingDateTime": "Meeting Date & Time",
+    "leader": "Leader",
+    "reportType": "Report Type",
+    "location": "Location",
+    "periodicity": "Periodicity",
+    "googleMapsLink": "Google Maps Link",
+    "viewOnMaps": "View on Google Maps",
+    "meetingInfo": "Meeting Information",
+    "leaderInfo": "Leader Information",
+    "locationInfo": "Location Information",
+    "systemInfo": "System Information",
+    "created": "Created",
+    "lastUpdated": "Last Updated",
+    "deleteConfirm": "Are you sure you want to delete this recurring meeting? This may also affect associated reports.",
+    "deleteSuccess": "Recurring meeting deleted successfully",
+    "deleteError": "Failed to delete recurring meeting",
+    "loadError": "Failed to load recurring meeting",
+    "backToMeetings": "Back to Recurring Meetings",
+    "selectLeader": "Select a leader",
+    "selectReportType": "Select a report type",
+    "selectPeriodicity": "Select periodicity",
+    "meetingLocationAddress": "Meeting location address",
+    "createMeeting": "Create Recurring Meeting",
+    "updateMeeting": "Update Recurring Meeting",
+    "meetingNotFound": "Recurring meeting not found",
+    "celula": "Cell",
+    "culto": "Service",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "daily": "Daily",
+    "reportsCount": "Associated Reports",
+    "viewReports": "View Reports",
+    "viewReportsMessage": "Click 'View Reports' to see all reports associated with this recurring meeting."
   },
   "forms": {
     "required": "This field is required",

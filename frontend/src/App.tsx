@@ -8,6 +8,9 @@ import Dashboard from './components/Dashboard';
 import PersonsList from './components/persons/PersonsList';
 import PersonForm from './components/persons/PersonForm';
 import PersonDetail from './components/persons/PersonDetail';
+import RecurringMeetingsList from './components/recurring-meetings/RecurringMeetingsList';
+import RecurringMeetingForm from './components/recurring-meetings/RecurringMeetingForm';
+import RecurringMeetingDetail from './components/recurring-meetings/RecurringMeetingDetail';
 import ReportsList from './components/reports/ReportsList';
 import ReportForm from './components/reports/ReportForm';
 import ReportDetail from './components/reports/ReportDetail';
@@ -38,6 +41,12 @@ function App() {
                           <Route path="/persons/new" element={<PersonForm />} />
                           <Route path="/persons/:id" element={<PersonDetail />} />
                           <Route path="/persons/:id/edit" element={<PersonForm />} />
+                          
+                          {/* Recurring Meetings routes */}
+                          <Route path="/recurring-meetings" element={<RecurringMeetingsList />} />
+                          <Route path="/recurring-meetings/new" element={<RecurringMeetingForm />} />
+                          <Route path="/recurring-meetings/:id" element={<RecurringMeetingDetail />} />
+                          <Route path="/recurring-meetings/:id/edit" element={<RecurringMeetingForm />} />
                           
                           {/* Reports routes */}
                           <Route path="/reports" element={<ReportsList />} />

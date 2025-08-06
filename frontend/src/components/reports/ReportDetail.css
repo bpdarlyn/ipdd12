@@ -34,6 +34,12 @@
   text-decoration: underline;
 }
 
+@media (prefers-color-scheme: dark) {
+  .back-link {
+    color: #66b3ff;
+  }
+}
+
 .header-actions {
   display: flex;
   gap: 1rem;
@@ -44,6 +50,14 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .report-card {
+    background: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .report-header {
@@ -91,6 +105,12 @@
   border-bottom: 1px solid #e9ecef;
 }
 
+@media (prefers-color-scheme: dark) {
+  .info-section {
+    border-bottom: 1px solid #404040;
+  }
+}
+
 .info-section:last-child {
   border-bottom: none;
   margin-bottom: 0;
@@ -104,6 +124,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .info-section h3 {
+    color: #e0e0e0;
+  }
 }
 
 .info-grid {
@@ -136,6 +162,16 @@
   line-height: 1.4;
 }
 
+@media (prefers-color-scheme: dark) {
+  .info-item label {
+    color: #b0b0b0;
+  }
+  
+  .info-item span {
+    color: #e0e0e0;
+  }
+}
+
 .highlight {
   color: #007bff;
   font-weight: 600;
@@ -163,6 +199,13 @@
   padding: 1rem;
   border-radius: 8px;
   border-left: 4px solid #007bff;
+}
+
+@media (prefers-color-scheme: dark) {
+  .address {
+    background: #2a2a2a;
+    color: #e0e0e0;
+  }
 }
 
 .maps-link {
@@ -197,6 +240,12 @@
   align-items: center;
 }
 
+@media (prefers-color-scheme: dark) {
+  .participant-item {
+    background: #2a2a2a;
+  }
+}
+
 .participant-info {
   flex: 1;
 }
@@ -207,6 +256,12 @@
   font-size: 1rem;
   display: block;
   margin-bottom: 0.25rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .participant-name {
+    color: #e0e0e0;
+  }
 }
 
 .participant-type {
@@ -225,6 +280,12 @@
   margin-top: 0.5rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  .participant-meta {
+    color: #b0b0b0;
+  }
+}
+
 .participants-summary {
   display: flex;
   gap: 2rem;
@@ -232,6 +293,12 @@
   background: #e3f2fd;
   border-radius: 8px;
   justify-content: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .participants-summary {
+    background: #2a2a2a;
+  }
 }
 
 .summary-item {
@@ -245,6 +312,12 @@
   font-size: 0.8rem;
   color: #666;
   font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+  .summary-item .label {
+    color: #b0b0b0;
+  }
 }
 
 .summary-item .count {
@@ -269,6 +342,12 @@
   align-items: center;
 }
 
+@media (prefers-color-scheme: dark) {
+  .attachment-item {
+    background: #2a2a2a;
+  }
+}
+
 .attachment-info {
   flex: 1;
 }
@@ -285,6 +364,16 @@
   gap: 1.5rem;
   font-size: 0.8rem;
   color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+  .attachment-name {
+    color: #e0e0e0;
+  }
+  
+  .attachment-meta {
+    color: #b0b0b0;
+  }
 }
 
 /* Button Styles */

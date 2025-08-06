@@ -8,6 +8,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+def get_database_url():
+    """Get the database URL for Alembic migrations"""
+    return settings.DATABASE_URL
+
 def get_db():
     db = SessionLocal()
     try:

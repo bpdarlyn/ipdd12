@@ -27,6 +27,7 @@ const Header: React.FC = () => {
         <nav className="header-nav">
           <Link to="/dashboard" className="nav-link">{t('nav.dashboard')}</Link>
           <Link to="/persons" className="nav-link">{t('nav.persons')}</Link>
+          <Link to="/recurring-meetings" className="nav-link">{t('nav.recurringMeetings')}</Link>
           <Link to="/reports" className="nav-link">{t('nav.reports')}</Link>
         </nav>
 

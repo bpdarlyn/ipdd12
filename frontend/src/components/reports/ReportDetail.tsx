@@ -6,6 +6,7 @@ import apiService from '../../services/api';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ui/ErrorMessage';
 import AttachmentsManager from './AttachmentsManager';
+import { DateFormatter } from '../../utils/dateFormatter';
 import './ReportDetail.css';
 
 const ReportDetail: React.FC = () => {
@@ -15,6 +16,7 @@ const ReportDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { t } = useTranslation();
+  const dateFormatter = new DateFormatter(t);
 
   useEffect(() => {
     if (id) {
@@ -48,13 +50,6 @@ const ReportDetail: React.FC = () => {
     }
   };
 
-  const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
 
   const formatCurrency = (amount: number | string, currency: string) => {
     const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
@@ -66,18 +61,19 @@ const ReportDetail: React.FC = () => {
 
   const getParticipantTypeLabel = (type: string): string => {
     switch (type) {
-      case 'M': return t('forms.member');
-      case 'V': return t('forms.visitor');
-      case 'P': return t('forms.participant');
+      case 'MEMBER': return t('forms.member');
+      case 'VISITOR': return t('forms.visitor');
+      case 'PARTICIPANT': return t('forms.participant');
       default: return type;
     }
   };
 
-  const getReportTypeLabel = (type: string): string => {
-    switch (type) {
-      case 'celula': return t('reports.celula');
-      case 'culto': return t('reports.culto');
-      default: return type.charAt(0).toUpperCase() + type.slice(1);
+  const getReportTypeLabel = (recurringMeeting: any): string => {
+    if (!recurringMeeting) return t('common.unknown');
+    switch (recurringMeeting.report_type) {
+      case 'celula': return t('recurringMeetings.celula');
+      case 'culto': return t('recurringMeetings.culto');
+      default: return recurringMeeting.report_type.charAt(0).toUpperCase() + recurringMeeting.report_type.slice(1);
     }
   };
 
@@ -118,17 +114,17 @@ const ReportDetail: React.FC = () => {
       <div className="report-card">
         <div className="report-header">
           <div className="header-left">
-            <h1>{getReportTypeLabel(report.report_type)} Report</h1>
+            <h1>{getReportTypeLabel(report.recurring_meeting)} Report</h1>
             <div className="report-meta">
               <span className="report-id">ID: {report.id}</span>
               <span className="report-date">
-                {t('reports.created')}: {formatDate(report.created_at)}
+                {t('reports.created')}: {dateFormatter.formatDate(report.created_at)}
               </span>
             </div>
           </div>
           <div className="header-right">
             <div className="type-badge">
-              {report.report_type.toUpperCase()}
+              {report.recurring_meeting?.report_type?.toUpperCase() || 'UNKNOWN'}
             </div>
           </div>
         </div>
@@ -140,11 +136,11 @@ const ReportDetail: React.FC = () => {
             <div className="info-grid">
               <div className="info-item">
                 <label>{t('reports.registrationDate')}:</label>
-                <span>{formatDateTime(report.registration_date)}</span>
+                <span>{dateFormatter.formatDateTime(report.registration_date)}</span>
               </div>
               <div className="info-item">
                 <label>{t('reports.meetingDateTime')}:</label>
-                <span>{formatDateTime(report.meeting_datetime)}</span>
+                <span>{dateFormatter.formatMeetingDateTime(report.recurring_meeting?.meeting_datetime)}</span>
               </div>
               <div className="info-item">
                 <label>{t('reports.attendeesCount')}:</label>
@@ -160,8 +156,8 @@ const ReportDetail: React.FC = () => {
               <div className="info-item">
                 <label>{t('reports.leader')}:</label>
                 <span>
-                  {report.leader ? 
-                    `${report.leader.first_name} ${report.leader.last_name}` : 
+                  {report.recurring_meeting?.leader ?
+                    `${report.recurring_meeting?.leader?.first_name} ${report.recurring_meeting?.leader?.last_name}` :
                     `Person ID: ${report.leader_person_id}`
                   }
                 </span>
@@ -235,7 +231,7 @@ const ReportDetail: React.FC = () => {
                       </span>
                     </div>
                     <small className="participant-meta">
-                      {t('common.created')}: {formatDate(participant.created_at)}
+                      {t('common.created')}: {dateFormatter.formatDate(participant.created_at)}
                     </small>
                   </div>
                 ))}
@@ -246,19 +242,19 @@ const ReportDetail: React.FC = () => {
                 <div className="summary-item">
                   <span className="label">{t('reports.members')}:</span>
                   <span className="count">
-                    {report.participants.filter(p => p.participant_type === 'M').length}
+                    {report.participants.filter(p => p.participant_type === 'MEMBER').length}
                   </span>
                 </div>
                 <div className="summary-item">
                   <span className="label">{t('reports.visitors')}:</span>
                   <span className="count">
-                    {report.participants.filter(p => p.participant_type === 'V').length}
+                    {report.participants.filter(p => p.participant_type === 'VISITOR').length}
                   </span>
                 </div>
                 <div className="summary-item">
                   <span className="label">{t('reports.participantsCount')}:</span>
                   <span className="count">
-                    {report.participants.filter(p => p.participant_type === 'P').length}
+                    {report.participants.filter(p => p.participant_type === 'PARTICIPANT').length}
                   </span>
                 </div>
               </div>
@@ -282,11 +278,11 @@ const ReportDetail: React.FC = () => {
             <div className="info-grid">
               <div className="info-item">
                 <label>{t('reports.created')}:</label>
-                <span>{formatDateTime(report.created_at)}</span>
+                <span>{dateFormatter.formatDateTime(report.created_at)}</span>
               </div>
               <div className="info-item">
                 <label>{t('reports.lastUpdated')}:</label>
-                <span>{formatDateTime(report.updated_at)}</span>
+                <span>{dateFormatter.formatDateTime(report.updated_at)}</span>
               </div>
             </div>
           </div>

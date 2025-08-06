@@ -31,7 +31,8 @@
       "Bash(--authorize-all-groups )",
       "Bash(--description \"Allow internet access\" )",
       "Bash(mv:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": []
   }

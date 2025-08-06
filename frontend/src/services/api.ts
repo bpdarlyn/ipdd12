@@ -1,6 +1,13 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import type { LoginRequest, LoginResponse, UserInfo } from '../types/index';
+import type { 
+  LoginRequest, 
+  LoginResponse, 
+  UserInfo, 
+  RecurringMeeting, 
+  RecurringMeetingCreate, 
+  RecurringMeetingUpdate 
+} from '../types/index';
 
 class ApiService {
   private api: AxiosInstance;
@@ -116,6 +123,36 @@ class ApiService {
   async deleteReport(id: number) {
     const response = await this.api.delete(`/reports/${id}`);
     return response.data;
+  }
+
+  // Recurring Meeting endpoints
+  async getRecurringMeetings(skip = 0, limit = 100): Promise<RecurringMeeting[]> {
+    const response = await this.api.get(`/recurring-meetings?skip=${skip}&limit=${limit}`);
+    return response.data;
+  }
+
+  async getRecurringMeeting(id: number): Promise<RecurringMeeting> {
+    const response = await this.api.get(`/recurring-meetings/${id}`);
+    return response.data;
+  }
+
+  async getRecurringMeetingsByLeader(leaderId: number): Promise<RecurringMeeting[]> {
+    const response = await this.api.get(`/recurring-meetings/leader/${leaderId}`);
+    return response.data;
+  }
+
+  async createRecurringMeeting(recurringMeeting: RecurringMeetingCreate): Promise<RecurringMeeting> {
+    const response = await this.api.post('/recurring-meetings', recurringMeeting);
+    return response.data;
+  }
+
+  async updateRecurringMeeting(id: number, recurringMeeting: RecurringMeetingUpdate): Promise<RecurringMeeting> {
+    const response = await this.api.put(`/recurring-meetings/${id}`, recurringMeeting);
+    return response.data;
+  }
+
+  async deleteRecurringMeeting(id: number): Promise<void> {
+    await this.api.delete(`/recurring-meetings/${id}`);
   }
 
   // Attachment endpoints

@@ -5,6 +5,7 @@ import type { Person } from '../../types/index';
 import apiService from '../../services/api';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ui/ErrorMessage';
+import { DateFormatter } from '../../utils/dateFormatter';
 import './PersonDetail.css';
 
 const PersonDetail: React.FC = () => {
@@ -14,6 +15,7 @@ const PersonDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { t } = useTranslation();
+  const dateFormatter = new DateFormatter(t);
 
   useEffect(() => {
     if (id) {
@@ -86,7 +88,7 @@ const PersonDetail: React.FC = () => {
             <div className="info-grid">
               <div className="info-item">
                 <label>{t('persons.birthDate')}:</label>
-                <span>{new Date(person.birth_date).toLocaleDateString()}</span>
+                <span>{dateFormatter.formatBirthDate(person.birth_date)}</span>
               </div>
               <div className="info-item">
                 <label>{t('persons.phone')}:</label>

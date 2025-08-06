@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #f8f9fa;
+  background-color: var(--color-bg-secondary);
   padding: 1rem 5% !important;
   width: 100% !important;
   max-width: none !important;
@@ -19,11 +19,11 @@
 }
 
 .login-card {
-  background-color: #ffffff;
+  background-color: var(--color-bg-primary);
   padding: 3rem;
   border-radius: 16px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border: 1px solid #e9ecef;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border-light);
   width: 100% !important;
   max-width: 900px !important;
 }
@@ -53,14 +53,14 @@
 }
 
 .login-header h1 {
-  color: #212529;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
   font-size: 2.5rem;
   font-weight: 600;
 }
 
 .login-header p {
-  color: #6c757d;
+  color: var(--color-text-secondary);
   margin: 0;
   font-size: 1.1rem;
 }
@@ -78,35 +78,35 @@
 
 .form-group label {
   margin-bottom: 0.5rem;
-  color: #212529;
+  color: var(--color-text-primary);
   font-weight: 500;
   font-size: 0.95rem;
 }
 
 .form-group input {
   padding: 1rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--color-border-medium);
   border-radius: 8px;
   font-size: 1.1rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  background-color: #ffffff;
-  color: #212529;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
 .form-group input:disabled {
-  background-color: #f1f3f4;
+  background-color: var(--color-bg-secondary);
   cursor: not-allowed;
 }
 
 .login-btn {
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   border: none;
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -122,10 +122,10 @@
 }
 
 .login-btn:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--color-primary-dark);
 }
 
 .login-btn:disabled {
-  background-color: #6c757d;
+  background-color: var(--color-gray-600);
   cursor: not-allowed;
 }

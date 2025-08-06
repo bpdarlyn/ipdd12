@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { Person } from '../../types/index';
 import apiService from '../../services/api';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import { DateFormatter } from '../../utils/dateFormatter';
 import ErrorMessage from '../ui/ErrorMessage';
 import { CardLoader } from '../ui/LoadingStates';
 import ErrorBoundary from '../ui/ErrorBoundary';
@@ -14,6 +14,7 @@ const PersonsList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { t } = useTranslation();
+  const dateFormatter = new DateFormatter(t);
 
   useEffect(() => {
     loadPersons();
@@ -92,7 +93,7 @@ const PersonsList: React.FC = () => {
                   <div className="person-info">
                     <h3>{person.first_name} {person.last_name}</h3>
                     <p className="person-phone">📞 {person.phone}</p>
-                    <p className="person-birth-date">🎂 {new Date(person.birth_date).toLocaleDateString()}</p>
+                    <p className="person-birth-date">🎂 {dateFormatter.formatBirthDate(person.birth_date)}</p>
                     <p className="person-address">📍 {person.home_address}</p>
                     {person.google_maps_link && (
                       <a href={person.google_maps_link} target="_blank" rel="noopener noreferrer" className="maps-link">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import type { Report, ReportCreate, ReportUpdate, ReportType, Currency, Person, ReportParticipantCreate, ParticipantType } from '../../types/index';
+import type { Report, ReportCreate, ReportUpdate, Currency, Person, ReportParticipantCreate, ParticipantType, RecurringMeeting } from '../../types/index';
 import apiService from '../../services/api';
 import LoadingSpinner from '../ui/LoadingSpinner';
 import ErrorMessage from '../ui/ErrorMessage';
@@ -16,9 +16,9 @@ const ReportForm: React.FC = () => {
 
   const getParticipantTypeLabel = (type: ParticipantType): string => {
     switch (type) {
-      case 'M': return t('forms.member');
-      case 'V': return t('forms.visitor');
-      case 'P': return t('forms.participant');
+      case 'MEMBER': return t('forms.member');
+      case 'VISITOR': return t('forms.visitor');
+      case 'PARTICIPANT': return t('forms.participant');
       default: return type;
     }
   };
@@ -26,22 +26,23 @@ const ReportForm: React.FC = () => {
   const [report, setReport] = useState({
     registration_date: '',
     meeting_datetime: '',
+    recurring_meeting_id: 0,
     leader_person_id: 0,
     leader_phone: '',
     collaborator: '',
     location: '',
     collection_amount: 0,
     currency: 'USD' as Currency,
-    report_type: 'celula' as ReportType,
     attendees_count: 0,
     google_maps_link: '',
     participants: [] as ReportParticipantCreate[],
   });
 
   const [persons, setPersons] = useState<Person[]>([]);
+  const [recurringMeetings, setRecurringMeetings] = useState<RecurringMeeting[]>([]);
   const [newParticipant, setNewParticipant] = useState({
     participant_name: '',
-    participant_type: 'M' as ParticipantType,
+    participant_type: 'MEMBER' as ParticipantType,
   });
   const [loadedReport, setLoadedReport] = useState<Report | null>(null);
 
@@ -51,6 +52,7 @@ const ReportForm: React.FC = () => {
 
   useEffect(() => {
     loadPersons();
+    loadRecurringMeetings();
     if (isEdit && id) {
       loadReport(parseInt(id));
     } else {
@@ -72,6 +74,15 @@ const ReportForm: React.FC = () => {
     }
   };
 
+  const loadRecurringMeetings = async () => {
+    try {
+      const data = await apiService.getRecurringMeetings();
+      setRecurringMeetings(data);
+    } catch (err: any) {
+      console.error('Failed to load recurring meetings:', err);
+    }
+  };
+
   const loadReport = async (reportId: number) => {
     try {
       setLoading(true);
@@ -80,13 +91,13 @@ const ReportForm: React.FC = () => {
       setReport({
         registration_date: data.registration_date.slice(0, 16), // Format for datetime-local input
         meeting_datetime: data.meeting_datetime.slice(0, 16),
+        recurring_meeting_id: data.recurring_meeting_id,
         leader_person_id: data.leader_person_id,
         leader_phone: data.leader_phone,
         collaborator: data.collaborator || '',
         location: data.location,
         collection_amount: typeof data.collection_amount === 'string' ? parseFloat(data.collection_amount) : data.collection_amount,
         currency: data.currency,
-        report_type: data.report_type,
         attendees_count: data.attendees_count,
         google_maps_link: data.google_maps_link || '',
         participants: data.participants.map(p => ({
@@ -154,6 +165,23 @@ const ReportForm: React.FC = () => {
     }
   };
 
+  const handleRecurringMeetingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const meetingId = parseInt(e.target.value);
+    const selectedMeeting = recurringMeetings.find(m => m.id === meetingId);
+    if (selectedMeeting) {
+      const selectedPerson = selectedMeeting.leader;
+      setReport(prev => ({
+        ...prev,
+        recurring_meeting_id: meetingId,
+        leader_person_id: selectedMeeting.leader_person_id,
+        leader_phone: selectedPerson?.phone || '',
+        location: selectedMeeting.location,
+        google_maps_link: selectedMeeting.google_maps_link || '',
+        meeting_datetime: selectedMeeting.meeting_datetime.slice(0, 16),
+      }));
+    }
+  };
+
   const addParticipant = () => {
     if (newParticipant.participant_name.trim()) {
       setReport(prev => ({
@@ -162,7 +190,7 @@ const ReportForm: React.FC = () => {
       }));
       setNewParticipant({
         participant_name: '',
-        participant_type: 'M',
+        participant_type: 'MEMBER',
       });
     }
   };
@@ -196,19 +224,24 @@ const ReportForm: React.FC = () => {
           
           <div className="form-row">
             <div className="form-group">
-              <label htmlFor="report_type">{t('reports.reportType')} *</label>
+              <label htmlFor="recurring_meeting_id">{t('reports.recurringMeeting')} *</label>
               <select
-                id="report_type"
-                name="report_type"
-                value={report.report_type}
-                onChange={handleChange}
+                id="recurring_meeting_id"
+                name="recurring_meeting_id"
+                value={report.recurring_meeting_id}
+                onChange={handleRecurringMeetingChange}
                 required
                 disabled={saving}
               >
-                <option value="celula">{t('reports.celula')}</option>
-                <option value="culto">{t('reports.culto')}</option>
+                <option value="">{t('reports.selectRecurringMeeting')}</option>
+                {recurringMeetings.map((meeting) => (
+                  <option key={meeting.id} value={meeting.id}>
+                    {t(`recurringMeetings.${meeting.report_type}`)} - {meeting.leader?.first_name} - {meeting.description}
+                  </option>
+                ))}
               </select>
             </div>
+
 
             <div className="form-group">
               <label htmlFor="registration_date">{t('reports.registrationDate')} *</label>
@@ -396,9 +429,9 @@ const ReportForm: React.FC = () => {
                     }))}
                     disabled={saving}
                   >
-                    <option value="M">{t('forms.member')}</option>
-                    <option value="V">{t('forms.visitor')}</option>
-                    <option value="P">{t('forms.participant')}</option>
+                    <option value="MEMBER">{t('forms.member')}</option>
+                    <option value="VISITOR">{t('forms.visitor')}</option>
+                    <option value="PARTICIPANT">{t('forms.participant')}</option>
                   </select>
                 </div>
                 <button

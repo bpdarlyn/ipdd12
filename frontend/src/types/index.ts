@@ -59,26 +59,48 @@ export enum Currency {
 }
 
 export enum ParticipantType {
-  M = 'M', // Miembro
-  V = 'V', // Visitas
-  P = 'P'  // Participantes
+  MEMBER = 'MEMBER',
+  VISITOR = 'VISITOR',
+  PARTICIPANT = 'PARTICIPANT'
+}
+
+export enum Periodicity {
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
+  DAILY = 'DAILY'
+}
+
+export interface RecurringMeeting {
+  id: number;
+  meeting_datetime: string; // ISO datetime string
+  leader_person_id: number;
+  report_type: ReportType;
+  location: string;
+  description?: string;
+  periodicity: Periodicity;
+  google_maps_link?: string;
+  created_at: string;
+  updated_at: string;
+  leader?: Person;
+  reports?: Report[];
 }
 
 export interface Report {
   id: number;
   registration_date: string; // ISO datetime string
   meeting_datetime: string; // ISO datetime string
+  recurring_meeting_id: number;
   leader_person_id: number;
   leader_phone: string;
   collaborator?: string;
   location: string;
   collection_amount: number | string; // Can come as string from API
   currency: Currency;
-  report_type: ReportType;
   attendees_count: number;
   google_maps_link?: string;
   created_at: string;
   updated_at: string;
+  recurring_meeting?: RecurringMeeting;
   leader?: Person;
   participants: ReportParticipant[];
   attachments: ReportAttachment[];
@@ -87,13 +109,13 @@ export interface Report {
 export interface ReportCreate {
   registration_date: string; // ISO datetime string
   meeting_datetime: string; // ISO datetime string
+  recurring_meeting_id: number;
   leader_person_id: number;
   leader_phone: string;
   collaborator?: string;
   location: string;
   collection_amount: number;
   currency: Currency;
-  report_type: ReportType;
   attendees_count: number;
   google_maps_link?: string;
   participants: ReportParticipantCreate[];
@@ -102,13 +124,13 @@ export interface ReportCreate {
 export interface ReportUpdate {
   registration_date?: string; // ISO datetime string
   meeting_datetime?: string; // ISO datetime string
+  recurring_meeting_id?: number;
   leader_person_id?: number;
   leader_phone?: string;
   collaborator?: string;
   location?: string;
   collection_amount?: number;
   currency?: Currency;
-  report_type?: ReportType;
   attendees_count?: number;
   google_maps_link?: string;
   participants?: ReportParticipantCreate[];
@@ -151,4 +173,26 @@ export interface PaginatedResponse<T> {
   total: number;
   page: number;
   pages: number;
+}
+
+// Recurring Meeting types (defined after Report to avoid circular references)
+
+export interface RecurringMeetingCreate {
+  meeting_datetime: string; // ISO datetime string
+  leader_person_id: number;
+  report_type: ReportType;
+  location: string;
+  description?: string;
+  periodicity: Periodicity;
+  google_maps_link?: string;
+}
+
+export interface RecurringMeetingUpdate {
+  meeting_datetime?: string; // ISO datetime string
+  leader_person_id?: number;
+  report_type?: ReportType;
+  location?: string;
+  description?: string;
+  periodicity?: Periodicity;
+  google_maps_link?: string;
 }

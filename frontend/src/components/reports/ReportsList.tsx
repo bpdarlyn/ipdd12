@@ -8,6 +8,7 @@ import ErrorMessage from '../ui/ErrorMessage';
 import { CardLoader, LoadingButton } from '../ui/LoadingStates';
 import { useMultipleLoading } from '../../hooks/useLoading';
 import ErrorBoundary from '../ui/ErrorBoundary';
+import { DateFormatter } from '../../utils/dateFormatter';
 import './ReportsList.css';
 
 const ReportsList: React.FC = () => {
@@ -16,6 +17,7 @@ const ReportsList: React.FC = () => {
   const [error, setError] = useState('');
   const { setLoading: setDeleteLoading, isLoading: isDeleting } = useMultipleLoading();
   const { t } = useTranslation();
+  const dateFormatter = new DateFormatter(t);
 
   const getParticipantTypeLabel = (type: string): string => {
     switch (type) {
@@ -60,9 +62,6 @@ const ReportsList: React.FC = () => {
     }
   };
 
-  const formatDateTime = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
 
   const formatCurrency = (amount: number | string, currency: string) => {
     const numAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
@@ -118,10 +117,10 @@ const ReportsList: React.FC = () => {
                 <div className="report-card">
                   <div className="report-header">
                     <div className="report-type-badge">
-                      {report.report_type.toUpperCase()}
+                      {report.recurring_meeting?.leader?.first_name} - {report.recurring_meeting?.description}
                     </div>
                     <div className="report-date">
-                      {new Date(report.meeting_datetime).toLocaleDateString()}
+                      {dateFormatter.formatDate(report.registration_date)}
                     </div>
                   </div>
                   
@@ -134,7 +133,9 @@ const ReportsList: React.FC = () => {
                     <div className="info-row">
                       <span className="label">{t('reports.meetingDateTime')}:</span>
                       <span className="value">
-                        {formatDateTime(report.meeting_datetime)}
+                        {report.recurring_meeting?.meeting_datetime 
+                          ? dateFormatter.formatMeetingDateTime(report.recurring_meeting.meeting_datetime)
+                          : 'N/A'}
                       </span>
                     </div>
                     
@@ -150,11 +151,6 @@ const ReportsList: React.FC = () => {
                       </span>
                     </div>
                     
-                    <div className="info-row">
-                      <span className="label">{t('reports.leaderPhone')}:</span>
-                      <span className="value">{report.leader_phone}</span>
-                    </div>
-
                     {report.collaborator && (
                       <div className="info-row">
                         <span className="label">{t('reports.collaborator')}:</span>
@@ -178,7 +174,7 @@ const ReportsList: React.FC = () => {
 
                   <div className="report-meta">
                     <small>
-                      {t('reports.created')}: {new Date(report.created_at).toLocaleDateString()}
+                      {t('reports.created')}: {dateFormatter.formatDate(report.created_at)}
                     </small>
                     {report.participants.length > 0 && (
                       <small>

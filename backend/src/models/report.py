@@ -12,26 +12,27 @@ class Currency(str, enum.Enum):
     BOB = "BOB"
 
 class ParticipantType(str, enum.Enum):
-    MEMBER = "M"
-    VISITOR = "V" 
-    PARTICIPANT = "P"
+    MEMBER = "MEMBER"
+    VISITOR = "VISITOR" 
+    PARTICIPANT = "PARTICIPANT"
 
 class Report(BaseModel):
     __tablename__ = "reports"
 
     registration_date = Column(DateTime, nullable=False)
     meeting_datetime = Column(DateTime, nullable=False)
-    leader_person_id = Column(Integer, ForeignKey("persons.id"), nullable=False)
+    recurring_meeting_id = Column(Integer, ForeignKey("recurring_meetings.id", ondelete="CASCADE"), nullable=False)
+    leader_person_id = Column(Integer, ForeignKey("persons.id", ondelete="CASCADE"), nullable=False)
     leader_phone = Column(String(20), nullable=False)
     collaborator = Column(String(200), nullable=True)
     location = Column(String(500), nullable=False)
     collection_amount = Column(Numeric(10, 2), nullable=False)
-    currency = Column(Enum(Currency), nullable=False)
-    report_type = Column(Enum(ReportType), nullable=False)
+    currency = Column(Enum(Currency, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
     attendees_count = Column(Integer, nullable=False)
     google_maps_link = Column(String(1000), nullable=True)
 
     # Relationships
+    recurring_meeting = relationship("RecurringMeeting", back_populates="reports")
     leader = relationship("Person", back_populates="led_reports")
     participants = relationship("ReportParticipant", back_populates="report", cascade="all, delete-orphan")
     attachments = relationship("ReportAttachment", back_populates="report", cascade="all, delete-orphan")
@@ -39,9 +40,9 @@ class Report(BaseModel):
 class ReportParticipant(BaseModel):
     __tablename__ = "report_participants"
 
-    report_id = Column(Integer, ForeignKey("reports.id"), nullable=False)
+    report_id = Column(Integer, ForeignKey("reports.id", ondelete="CASCADE"), nullable=False)
     participant_name = Column(String(200), nullable=False)
-    participant_type = Column(Enum(ParticipantType), nullable=False)
+    participant_type = Column(Enum(ParticipantType, values_callable=lambda obj: [e.value for e in obj]), nullable=False)
 
     # Relationships
     report = relationship("Report", back_populates="participants")
@@ -49,7 +50,7 @@ class ReportParticipant(BaseModel):
 class ReportAttachment(BaseModel):
     __tablename__ = "report_attachments"
 
-    report_id = Column(Integer, ForeignKey("reports.id"), nullable=False)
+    report_id = Column(Integer, ForeignKey("reports.id", ondelete="CASCADE"), nullable=False)
     file_name = Column(String(255), nullable=False)
     file_key = Column(String(500), nullable=False)  # S3 key
     file_size = Column(Integer, nullable=False)

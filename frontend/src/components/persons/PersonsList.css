@@ -152,3 +152,54 @@
     padding: var(--spacing-8);
   }
 }
+
+/* Dark mode specific overrides */
+.dark-mode .person-card,
+[data-theme="dark"] .person-card,
+html.dark-mode .person-card,
+body.dark-mode .person-card {
+  background-color: var(--color-bg-primary) !important;
+  border-color: var(--color-border-light) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.dark-mode .person-card h3,
+[data-theme="dark"] .person-card h3,
+html.dark-mode .person-card h3,
+body.dark-mode .person-card h3 {
+  color: var(--color-text-primary) !important;
+}
+
+.dark-mode .person-phone,
+.dark-mode .person-birth-date,
+.dark-mode .person-address,
+[data-theme="dark"] .person-phone,
+[data-theme="dark"] .person-birth-date,
+[data-theme="dark"] .person-address,
+html.dark-mode .person-phone,
+html.dark-mode .person-birth-date,
+html.dark-mode .person-address,
+body.dark-mode .person-phone,
+body.dark-mode .person-birth-date,
+body.dark-mode .person-address {
+  color: var(--color-text-secondary) !important;
+}
+
+/* System preference dark mode */
+@media (prefers-color-scheme: dark) {
+  .person-card {
+    background-color: var(--color-bg-primary) !important;
+    border-color: var(--color-border-light) !important;
+    color: var(--color-text-primary) !important;
+  }
+  
+  .person-card h3 {
+    color: var(--color-text-primary) !important;
+  }
+  
+  .person-phone,
+  .person-birth-date,
+  .person-address {
+    color: var(--color-text-secondary) !important;
+  }
+}

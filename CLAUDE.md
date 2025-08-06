@@ -39,13 +39,27 @@ sam build
 sam deploy --config-env default
 ```
 
-### Database Migration (after first deployment)
-```python
-from sqlalchemy import create_engine
-from models import Base
-engine = create_engine(DATABASE_URL)
-Base.metadata.create_all(bind=engine)
+### Database Migrations with Alembic
+The project uses Alembic for database schema migrations:
+
+```bash
+# Create new migration (auto-generated from model changes)
+cd backend && alembic revision --autogenerate -m "description"
+
+# Apply migrations
+alembic upgrade head
+
+# Check current migration state
+alembic current
+
+# View migration history
+alembic history
 ```
+
+**CASCADE Constraints**: All foreign key relationships have CASCADE delete configured:
+- Person deletion → cascades to recurring_meetings and reports
+- RecurringMeeting deletion → cascades to reports  
+- Report deletion → cascades to participants and attachments
 
 ## Critical Implementation Details
 
@@ -58,7 +72,7 @@ Base.metadata.create_all(bind=engine)
 ### Domain Models
 - **Report Types**: `celula` (cell meetings), `culto` (celebration services)
 - **Currencies**: `USD`, `BOB` (Bolivianos)
-- **Participant Types**: `M` (Member), `V` (Visitor), `P` (Participant)
+- **Participant Types**: `MEMBER`, `VISITOR`, `PARTICIPANT` (database enum values)
 
 ### File Handling
 - S3 service generates unique keys for file uploads using UUID
@@ -69,7 +83,9 @@ Base.metadata.create_all(bind=engine)
 All environments use the same Lambda function but different CloudFormation stacks. The `samconfig.toml` defines environment-specific parameters that reference the corresponding data persistence stack outputs.
 
 ### Database Relationships
-- Person ← Report (via leader_person_id)
+- Person → RecurringMeeting (one-to-many via leader_person_id)
+- RecurringMeeting → Report (one-to-many via recurring_meeting_id)
+- Person ← Report (via leader_person_id, backup reference)
 - Report → ReportParticipant (one-to-many)
 - Report → ReportAttachment (one-to-many)
 
