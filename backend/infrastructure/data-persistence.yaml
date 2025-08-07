@@ -226,7 +226,7 @@ Resources:
   MySQLInstance:
     Type: AWS::RDS::DBInstance
     Properties:
-#      DBName: !Ref MainDBName
+      DBName: !Ref MainDBName
       DBInstanceIdentifier: !Sub 'ipdd12-mysql-${Environment}'
       DBInstanceClass: db.t3.small
       Engine: mysql
